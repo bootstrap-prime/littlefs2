@@ -505,7 +505,11 @@ impl<Storage: driver::Storage> Filesystem<'_, Storage> {
         size: ll::lfs_size_t,
     ) -> cty::c_int {
         // println!("in lfs_config_read for {} bytes", size);
-        let storage = unsafe { &*((*c).context as *const Storage) };
+        // storage needs to be mutable because storage.read() requires &mut self
+        // this is because in embedded contexts write access is needed to self
+        // to access peripherals
+        let mut storage = unsafe { &mut *((*c).context as *mut Storage) };
+        //let mut storage = unsafe { *mut Storage};
         debug_assert!(!c.is_null());
         let block_size = unsafe { c.read().block_size };
         let off = (block * block_size + off) as usize;
