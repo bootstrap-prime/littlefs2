@@ -508,7 +508,7 @@ impl<Storage: driver::Storage> Filesystem<'_, Storage> {
         // storage needs to be mutable because storage.read() requires &mut self
         // this is because in embedded contexts write access is needed to self
         // to access peripherals
-        let mut storage = unsafe { &mut *((*c).context as *mut Storage) };
+        let storage = unsafe { &mut *((*c).context as *mut Storage) };
         //let mut storage = unsafe { *mut Storage};
         debug_assert!(!c.is_null());
         let block_size = unsafe { c.read().block_size };
