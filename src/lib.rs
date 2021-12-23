@@ -1,4 +1,4 @@
-#![feature(core_intrinsics)]
+#![cfg_attr(feature = "ll-assertions", feature(core_intrinsics))]
 #![cfg_attr(not(test), no_std)]
 
 /*!
@@ -165,6 +165,7 @@ pub struct Version {
 #[cfg(test)]
 mod tests;
 
+#[cfg(feature = "ll-assertions")]
 #[no_mangle]
 pub extern "C"
 fn __assert_fail (__assertion: *const u8,
