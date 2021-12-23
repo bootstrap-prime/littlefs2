@@ -317,6 +317,7 @@ impl ops::Deref for PathBuf {
 }
 
 
+#[cfg(feature = "serde")]
 impl serde::Serialize for PathBuf {
     fn serialize<S>(&self, serializer: S) -> core::result::Result<S::Ok, S::Error>
     where
@@ -326,6 +327,7 @@ impl serde::Serialize for PathBuf {
     }
 }
 
+#[cfg(feature = "serde")]
 impl<'de> serde::Deserialize<'de> for PathBuf
 {
     fn deserialize<D>(deserializer: D) -> core::result::Result<Self, D::Error>

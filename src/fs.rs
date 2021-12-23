@@ -5,6 +5,7 @@ use core::{cell::RefCell, cmp, mem, slice};
 use bitflags::bitflags;
 use generic_array::typenum::marker_traits::Unsigned;
 use littlefs2_sys as ll;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 // so far, don't need `heapless-bytes`.
@@ -159,7 +160,8 @@ pub struct Filesystem<'a, Storage: driver::Storage> {
 }
 
 /// Regular file vs directory
-#[derive(Clone,Copy,Debug,Eq,Hash,PartialEq,Serialize,Deserialize)]
+#[derive(Clone,Copy,Debug,Eq,Hash,PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize,Deserialize))]
 pub enum FileType {
     File,
     Dir,
@@ -178,7 +180,8 @@ impl FileType {
 }
 
 /// File type (regular vs directory) and size of a file.
-#[derive(Clone,Debug,Eq,PartialEq,Serialize,Deserialize)]
+#[derive(Clone,Debug,Eq,PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize,Deserialize))]
 pub struct Metadata {
     file_type: FileType,
     size: usize,
@@ -994,7 +997,8 @@ impl<S: driver::Storage> io::Write for File<'_, '_, S>
     fn flush(&self) -> Result<()> { Ok(()) }
 }
 
-#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[derive(Clone,Debug,PartialEq,Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize,Deserialize))]
 pub struct DirEntry {
     file_name: PathBuf,
     metadata: Metadata,
