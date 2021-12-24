@@ -51,9 +51,6 @@ log-info = []
 log-debug = []
 log-warn = []
 log-error = []
-
-[patch.crates-io]
-littlefs2-sys = { path = "../littlefs2-sys" }
 # TODO: LFS_NAME_MAX (and maybe other sizes) are baked into the
 # compiled C library. For instance, the `lfs_info` struct has a
 # member `char name[LFS_NAME_MAX+1]`.
